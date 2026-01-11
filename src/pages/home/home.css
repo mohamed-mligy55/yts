@@ -1,0 +1,147 @@
+.container {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+@media (min-width :768px) {
+    .container {
+        width: 750px;
+    }
+}
+@media (min-width:992px) {
+    .container {
+        width: 970px;
+    }
+}
+@media (min-width:1200px) {
+    .container {
+        width: 1170px;
+    }
+  
+}
+
+.banner {
+        background: url(https://img.yts.lt/assets/images/movies/good_boy_2025/background.jpg) no-repeat center center;
+        background-size: cover;
+        height: calc(100vh + 70px);
+        position: relative;
+        z-index: 100;
+}
+.banner .overlay {
+      position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0 0 0 / 70%);
+  z-index: -1;
+}
+.banner .container .banner-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fill,minmax(250px , 1fr));
+        gap: 30px;
+}
+.banner .container .banner-content {
+        padding: 50px 0;
+}
+.banner .container .banner-content img {
+        border: 5px solid white;
+        transition: 0.3s;
+      
+}
+.banner .container .banner-content img::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(0, 0, 0);
+}
+.banner .container .banner-content img:hover {
+        border: 5px solid #6ac045;
+}
+.banner .container .banner-content .box {
+        position: relative;
+}
+.banner .container .banner-content .box .info {
+          position: absolute;
+ top: 28%;
+    left: 18%;
+    transform: translateY(-12%);
+    font-size: 25px;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    display: none;
+    transition: 0.2s;
+     
+}
+.banner .container .banner-content .box .info h2 {
+       color: white;
+}
+.banner .container .banner-content .box .info a {
+        background-color: #6ac045;
+        color: white;
+        padding: 10px 20px;
+        font-size: 14px;
+}
+.banner .container .banner-content .box:hover .info {
+        display: inline-flex;
+}
+.broweserall .container .broweser-content {
+        display:grid ;
+           grid-template-columns: repeat(auto-fill,minmax(250px , 1fr));
+        gap: 30px;
+        
+}
+.broweserall .container .broweser-content img {
+        border: 5px solid white;
+        transition: 0.3s;
+      
+}
+.broweserall .container .broweser-content img::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(0, 0, 0);
+}
+.broweserall .container .broweser-content img:hover {
+        border: 5px solid #6ac045;
+}
+.broweserall .container .broweser-content .box {
+        position: relative;
+}
+.broweserall .container .broweser-content .box .info {
+          position: absolute;
+ top: 28%;
+    left: 18%;
+    transform: translateY(-12%);
+    font-size: 25px;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    display: none;
+    transition: 0.2s;
+     
+}
+.broweserall .container .broweser-content .box .info h2 {
+       color: white;
+}
+.broweserall .container .broweser-content .box .info a {
+        background-color: #6ac045;
+        color: white;
+        padding: 10px 20px;
+        font-size: 14px;
+}
+.broweserall .container .broweser-content .box:hover .info {
+        display: inline-flex;
+}

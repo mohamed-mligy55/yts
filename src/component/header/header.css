@@ -1,0 +1,19 @@
+@media(max-width:767px) {
+    header nav {
+        display: none;
+ 
+    }
+}
+@media (min-width: 767px) and (max-width: 992px) {
+  header {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+
+@media(max-width:992px) {
+    header p {
+        display: none;
+    }
+}
