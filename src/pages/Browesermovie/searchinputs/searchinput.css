@@ -24,6 +24,8 @@
     background-color: #171717;
     padding: 50px 0;
     width: 100%;
+    margin: auto;
+   
 }
 .search form {
     margin: auto;
@@ -47,6 +49,16 @@
 
     height: 40px;
     background: #282828;
+}
+.search form button {
+    margin-left: 44px;
+    background: #6ac045;
+    color: white;
+    padding: 7px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4PX;
+    cursor: pointer;
 }
 .search form input:focus {
     outline: none;

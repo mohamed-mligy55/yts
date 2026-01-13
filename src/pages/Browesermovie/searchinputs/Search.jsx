@@ -1,111 +1,110 @@
 import { useState, useEffect } from "react";
-import "./searchinput.css"
+import "./searchinput.css";
 
-export const Search = ({queryterm ,  setparams}) => {
-    const [value, setValue] = useState(queryterm);
+export const Search = ({ queryterm, setparams, quality, genre, minimumRating, orderBy }) => {
+  const [value, setValue] = useState(queryterm || "");
 
-  // 🔹 Debounce Effect
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setparams(prev => {
-        const newParams = new URLSearchParams(prev);
-        newParams.set("query_term", value);
-        newParams.set("page", 1);
-        return newParams;
-      });
-    }, 500);
+  // State للفلاتر
+  const [filters, setFilters] = useState({
+    quality: quality || "all",
+    genre: genre || "all",
+    minimum_rating: minimumRating || "0",
+    order_by: orderBy || "latest",
+  });
 
-    return () => clearTimeout(timer);
-  }, [value]);
+  // تغيير أي فلتر
+  const handleChangeFilter = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
 
+  // Submit form
   const handleSubmit = (e) => {
     e.preventDefault();
-    // submit اختياري، الديبونس شغال لوحده
-  };
-  return (
-   <>
- 
-   <div className='search ' >
-      <div className="container">
 
-    <form onSubmit={handleSubmit}>
-     <h3>Search Term :</h3>
-      <input
+    setparams((prev) => {
+      const newParams = new URLSearchParams(prev);
+
+      // query term
+      newParams.set("query_term", value);
+      newParams.set("page", 1);
+
+      // تحديث باقي الفلاتر
+      Object.entries(filters).forEach(([key, val]) => {
+        if (val && val !== "all" && val !== "0") newParams.set(key, val);
+        else newParams.delete(key); // لو قيمة all أو 0 نحذفها
+      });
+
+      return newParams;
+    });
+  };
+
+  return (
+    <div className="search">
+      <div className="container">
+        <form onSubmit={handleSubmit}>
+          <h3>Search Term :</h3>
+          <input
             type="search"
             placeholder="Search"
-            value={queryterm}
-            onChange={(e) =>
-              setparams(prev => {
-                prev.set("query_term", e.target.value);
-                return prev;
-              })
-            }
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
           />
-    <button type="submit">Submit</button>
-    <div className="allselect">
-    <div class="selects">
-                    <p>Quality:</p>
-                    <select name="quality">
-                        <option value="all">All</option>
-                        <option value="480p">480p</option>
-                        <option value="720p">720p</option>
-                        <option value="1080p">1080p</option>
-                        <option value="1080p.x265">1080p.x265</option>
-                        <option value="2160p" selected="selected">2160p</option>
-                        <option value="3D">3D</option>
-                    </select>
-                </div>
-                <div class="selects">
-                    <p>Genre:</p>
-                    <select name="genre">
-                        <option value="all" selected="selected">All</option>
-                                                            <option value="action">Action</option>
-                                                            <option value="adventure">Adventure</option>
-                                                            <option value="animation">Animation</option>
-                                                            <option value="biography">Biography</option>
-                                                            <option value="comedy">Comedy</option>
-                                                            <option value="crime">Crime</option>
-                                                            <option value="documentary">Documentary</option>
-                                                            <option value="drama">Drama</option>
-                                                            <option value="family">Family</option>
-                                                            <option value="fantasy">Fantasy</option>
-                                                            <option value="film-noir">Film-Noir</option>
-                                                            <option value="game-show">Game-Show</option>
-                                                            <option value="history">History</option>
-                                                            <option value="horror">Horror</option>
-                                                            <option value="music">Music</option>
-                                                            <option value="musical">Musical</option>
-                                                            <option value="mystery">Mystery</option>
-                                                            <option value="news">News</option>
-                                                            <option value="reality-tv">Reality-TV</option>
-                                                            <option value="romance">Romance</option>
-                                                            <option value="sci-fi">Sci-Fi</option>
-                                                            <option value="sport">Sport</option>
-                                                            <option value="talk-show">Talk-Show</option>
-                                                            <option value="thriller">Thriller</option>
-                                                            <option value="war">War</option>
-                                                            <option value="western">Western</option>
-                                                </select>
-                </div>
-                <div class="selects">
-                    <p>Rating:</p>
-                    <select name="rating">
-                        <option value="0" selected="selected">All</option>
-                        <option value="9">9+</option>
-                        <option value="8">8+</option>
-                        <option value="7">7+</option>
-                        <option value="6">6+</option>
-                        <option value="5">5+</option>
-                        <option value="4">4+</option>
-                        <option value="3">3+</option>
-                        <option value="2">2+</option>
-                        <option value="1">1+</option>
-                    </select>
-                </div>
-                <div class="selects">
-                                                            <p>Year:</p>
-                    <select name="year">
-                        <option value="0" selected="selected">All</option>
+          <button type="submit">Submit</button>
+
+          <div className="allselect">
+            <div className="selects">
+              <p>Quality:</p>
+              <select name="quality" value={filters.quality} onChange={handleChangeFilter}>
+                <option value="all">All</option>
+                <option value="480p">480p</option>
+                <option value="720p">720p</option>
+                <option value="1080p">1080p</option>
+                <option value="1080p.x265">1080p.x265</option>
+                <option value="2160p">2160p</option>
+                <option value="3D">3D</option>
+              </select>
+            </div>
+
+            <div className="selects">
+              <p>Genre:</p>
+              <select name="genre" value={filters.genre} onChange={handleChangeFilter}>
+                <option value="all">All</option>
+                <option value="action">Action</option>
+                <option value="adventure">Adventure</option>
+                <option value="animation">Animation</option>
+                <option value="comedy">Comedy</option>
+                <option value="drama">Drama</option>
+                <option value="horror">Horror</option>
+                <option value="sci-fi">Sci-Fi</option>
+              </select>
+            </div>
+
+            <div className="selects">
+              <p>Rating:</p>
+              <select name="minimum_rating" value={filters.minimum_rating} onChange={handleChangeFilter}>
+                <option value="0">All</option>
+                <option value="9">9+</option>
+                <option value="8">8+</option>
+                <option value="7">7+</option>
+                <option value="6">6+</option>
+                <option value="5">5+</option>
+              </select>
+            </div>
+
+            <div className="selects">
+              <p>Order By:</p>
+              <select name="order_by" value={filters.order_by} onChange={handleChangeFilter}>
+                <option value="latest">Latest</option>
+                <option value="oldest">Oldest</option>
+                <option value="rating">IMDb Rating</option>
+              </select>
+            </div>
+          </div>
+          <div class="selects">
+               <p>Year:</p>
+                    <select >
+                        <option value="0">All</option>
                         <option value="2026">2026</option>
                         <option value="2025">2025</option>
                         <option value="2020-2026">2020-now</option>
@@ -119,20 +118,20 @@ export const Search = ({queryterm ,  setparams}) => {
                         <option value="1900-1949">1900-1949</option>
                     </select>
                 </div>
-                <div class="selects">
+                <div className="selects">
                     <p>Language:</p>
-                    <select name="language">
+                    <select >
                         <option value="en">English</option>
                         <option value="foreign">Foreign</option>
                         <option value="all" selected="selected">All</option>
-                                                    <option value="fr">French (3412)</option>
+                                                    <option value="fr">French (3414)</option>
                                                     <option value="ja">Japanese (2872)</option>
                                                     <option value="es">Spanish (1924)</option>
-                                                    <option value="it">Italian (1583)</option>
+                                                    <option value="it">Italian (1585)</option>
                                                     <option value="de">German (1308)</option>
                                                     <option value="zh">Chinese (1134)</option>
                                                     <option value="ko">Korean (990)</option>
-                                                    <option value="hi">Hindi (888)</option>
+                                                    <option value="hi">Hindi (889)</option>
                                                     <option value="cn">Cantonese (848)</option>
                                                     <option value="pt">Portuguese (478)</option>
                                                     <option value="tr">Turkish (471)</option>
@@ -259,28 +258,8 @@ export const Search = ({queryterm ,  setparams}) => {
                                                     <option value="sah">Sakha (1)</option>
                                             </select>
                 </div>
-                <div class="selects">
-                    <p>Order By:</p>
-                    <select name="order_by">
-                        <option value="latest" selected="selected">Latest</option>
-                        <option value="oldest">Oldest</option>
-                        <option value="featured">Featured</option>
-                        <option value="seeds">Seeds</option>
-                        <option value="peers">Peers</option>
-                        <option value="year">Year</option>
-                        <option value="rating">IMDb Rating</option>
-                        <option value="likes">YTS Likes</option>
-                        <option value="rt_audience">RT Audience</option>
-                        <option value="alphabetical">Alphabetical</option>
-                        <option value="downloads">Downloads</option>
-                    </select>
-                </div>
-                </div>
-    
-    </form>
-   </div>
-   </div>
-   
-   </>
-  )
-}
+        </form>
+      </div>
+    </div>
+  );
+};

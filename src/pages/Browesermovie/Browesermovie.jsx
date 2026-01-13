@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Search } from "./searchinputs/Search";
+import ReactPaginate from "react-paginate";
 
 export const Browesermovie = () => {
 
   const [params,setparams] = useSearchParams();
     const[datamovie ,setdatamovie] = useState([])
-   const [totalPages, setTotalPages] = useState(1);
+   const [pagecount, setpagecount] = useState(0);
 
   const limit = params.get("limit")  || 50;
   const page = params.get("page") || 1;
@@ -34,10 +35,11 @@ export const Browesermovie = () => {
         });
 
         const res = await fetch(
-          `https://yts.lt/api/v2/list_movies.json?${params}`
+          `https://yts.bz/api/v2/list_movies.json?${params}`
         );
         const data = await res.json();
         setdatamovie(data.data.movies || [])
+        setpagecount(data.data.movie_count / limit )
         console.log(data.data.movies)
       } catch (error) {
         console.error(error);
@@ -56,6 +58,17 @@ export const Browesermovie = () => {
      
     withRTRatings,
   ]);
+  const handlePageClick = (event) => {
+  const selectedPage = event.selected + 1;
+
+  setparams(prev => {
+    const p = new URLSearchParams(prev);
+    p.set("page", selectedPage);
+    return p;
+  });
+};
+
+
 
   return (
     <>
@@ -83,6 +96,22 @@ export const Browesermovie = () => {
   )}
 </div>
 </div>
+<div className="paginte">
+  <div className="container">
+    <ReactPaginate
+  breakLabel="..."
+  nextLabel="Next >"
+  previousLabel="< Prev"
+  onPageChange={handlePageClick}
+  pageRangeDisplayed={5}
+  pageCount={pagecount}
+  forcePage={page - 1}
+  renderOnZeroPageCount={null}
+/>
+
+  </div>
+</div>
+
 
 
     

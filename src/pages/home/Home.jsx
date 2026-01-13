@@ -11,11 +11,11 @@ useEffect(() => {
   const fetchdata = async () => {
     try {
       const res = await fetch(
-        "https://yts.lt/api/v2/list_movies.json"
+        "https://yts.bz/api/v2/list_movies.json"
       );
       const data = await res.json();
       setmoviedata(data.data.movies);
-      console.log(data.data.movies)
+      console.log(data)
     } catch (error) {
       console.log(error);
     }
