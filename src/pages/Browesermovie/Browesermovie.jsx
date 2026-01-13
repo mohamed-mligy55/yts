@@ -9,15 +9,21 @@ export const Browesermovie = () => {
     const[datamovie ,setdatamovie] = useState([])
    const [pagecount, setpagecount] = useState(0);
 
-  const limit = params.get("limit")  || 50;
-  const page = params.get("page") || 1;
-  const quality = params.get("quality") ;
-  const minimumRating = params.get("minimum_rating") || 1;
-  const queryTerm = params.get("query_term") ;
-  const genre = params.get("genre") || "";
-  const sortBy = params.get("sort_by") || "rating";
-  const orderBy = params.get("order_by") || "desc";
-  const withRTRatings = params.get("with_rt_ratings") || false;
+const limit = Number(params.get("limit")) || 20;
+const page = Number(params.get("page")) || 1;
+
+const quality = params.get("quality") || "";
+const minimumRating = Number(params.get("minimum_rating")) || 1;
+
+const queryTerm = params.get("query_term") || "";
+const genre = params.get("genre") || "";
+
+const sortBy = params.get("sort_by") || "rating";
+const orderBy = params.get("order_by") || "desc";
+
+const withRTRatings =
+  params.get("with_rt_ratings") === "true";
+
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -39,7 +45,8 @@ export const Browesermovie = () => {
         );
         const data = await res.json();
         setdatamovie(data.data.movies || [])
-        setpagecount(data.data.movie_count / limit )
+       setpagecount(Math.ceil(data.data.movie_count / limit));
+
         console.log(data.data.movies)
       } catch (error) {
         console.error(error);
@@ -55,7 +62,7 @@ export const Browesermovie = () => {
     queryTerm,
     genre,
     sortBy,
-     
+     orderBy,
     withRTRatings,
   ]);
   const handlePageClick = (event) => {
@@ -73,7 +80,7 @@ export const Browesermovie = () => {
   return (
     <>
     
-    <Search queryterm={queryTerm} setparams = {setparams} quality={quality} genre={genre} minimumRating={minimumRating} orderBy={orderBy}  />
+    <Search queryterm={queryTerm} setparams = {setparams} quality={quality} genre={genre} minimumRating={minimumRating} orderBy={orderBy} sortby={ sortBy }  />
     <div className="broweser-content bg-[#1d1d1d] pt-10 pb-10" >
     <div className="container grid grid-cols-4 gap-6 mt-8 bg-[#1d1d1d] ">
 

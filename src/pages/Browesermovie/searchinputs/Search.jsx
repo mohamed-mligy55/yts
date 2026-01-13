@@ -1,16 +1,35 @@
 import { useState, useEffect } from "react";
 import "./searchinput.css";
 
-export const Search = ({ queryterm, setparams, quality, genre, minimumRating, orderBy }) => {
+export const Search = ({ queryterm, setparams, quality, genre, minimumRating, orderBy,sortby }) => {
   const [value, setValue] = useState(queryterm || "");
 
   // State للفلاتر
-  const [filters, setFilters] = useState({
-    quality: quality || "all",
-    genre: genre || "all",
-    minimum_rating: minimumRating || "0",
-    order_by: orderBy || "latest",
-  });
+const [filters, setFilters] = useState({
+  quality: quality || "all",
+  genre: genre || "all",
+  minimum_rating: minimumRating || "0",
+sort_by: sortby || "date_added",
+   order_by: orderBy || "desc",
+});
+useEffect(() => {
+  setFilters(prev => ({
+    ...prev,
+    sort_by: sortby || "date_added",
+    order_by: orderBy || "desc",
+  }));
+}, [sortby, orderBy]);
+
+const handleOrderChange = (e) => {
+  const [sort_by, order_by] = e.target.value.split("-");
+
+  setFilters(prev => ({
+    ...prev,
+    sort_by,
+    order_by,
+  }));
+};
+
 
   // تغيير أي فلتر
   const handleChangeFilter = (e) => {
@@ -30,10 +49,11 @@ export const Search = ({ queryterm, setparams, quality, genre, minimumRating, or
       newParams.set("page", 1);
 
       // تحديث باقي الفلاتر
-      Object.entries(filters).forEach(([key, val]) => {
-        if (val && val !== "all" && val !== "0") newParams.set(key, val);
-        else newParams.delete(key); // لو قيمة all أو 0 نحذفها
-      });
+    Object.entries(filters).forEach(([key, val]) => {
+  if (val && val !== "all" && val !== "0") newParams.set(key, val);
+  else newParams.delete(key);
+});
+
 
       return newParams;
     });
@@ -77,6 +97,8 @@ export const Search = ({ queryterm, setparams, quality, genre, minimumRating, or
                 <option value="drama">Drama</option>
                 <option value="horror">Horror</option>
                 <option value="sci-fi">Sci-Fi</option>
+<option value="adventure">Adventure</option> <option value="animation">Animation</option> <option value="biography">Biography</option> <option value="comedy">Comedy</option> <option value="crime">Crime</option> <option value="documentary">Documentary</option> <option value="drama">Drama</option> <option value="family">Family</option> <option value="fantasy">Fantasy</option> <option value="film-noir">Film-Noir</option> <option value="game-show">Game-Show</option> <option value="history">History</option> <option value="horror">Horror</option> <option value="music">Music</option> <option value="musical">Musical</option> <option value="mystery">Mystery</option> <option value="news">News</option> <option value="reality-tv">Reality-TV</option> <option value="romance">Romance</option> <option value="sci-fi">Sci-Fi</option> <option value="sport">Sport</option> <option value="talk-show">Talk-Show</option> <option value="thriller">Thriller</option> <option value="war">War</option> <option value="western">Western</option>
+
               </select>
             </div>
 
@@ -89,19 +111,26 @@ export const Search = ({ queryterm, setparams, quality, genre, minimumRating, or
                 <option value="7">7+</option>
                 <option value="6">6+</option>
                 <option value="5">5+</option>
+                <option value="4">4+</option>
+                <option value="3">3+</option>
+                <option value="2">2+</option>
+                <option value="1">1+</option>
+                
               </select>
             </div>
 
             <div className="selects">
-              <p>Order By:</p>
-              <select name="order_by" value={filters.order_by} onChange={handleChangeFilter}>
-                <option value="latest">Latest</option>
-                <option value="oldest">Oldest</option>
-                <option value="rating">IMDb Rating</option>
-              </select>
-            </div>
-          </div>
-          <div class="selects">
+  <p>Order By:</p>
+  <select  value={`${filters.sort_by}-${filters.order_by}`}
+    onChange={handleOrderChange}>
+    <option value="date_added-desc">Latest</option>
+    <option value="date_added-asc">Oldest</option>
+    <option value="rating-desc">IMDb Rating</option>
+  </select>
+</div>
+
+        
+          <div className="selects">
                <p>Year:</p>
                     <select >
                         <option value="0">All</option>
@@ -257,6 +286,7 @@ export const Search = ({ queryterm, setparams, quality, genre, minimumRating, or
                                                     <option value="qu">Quechua (1)</option>
                                                     <option value="sah">Sakha (1)</option>
                                             </select>
+                </div>
                 </div>
         </form>
       </div>
