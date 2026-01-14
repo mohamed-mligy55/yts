@@ -99,3 +99,14 @@
 .search form .allselect .selects select:focus {
     outline: none;
 }
+.search form .clear {
+     margin-left: 44px;
+    background: #6ac045;
+    color: white;
+    padding: 7px 25px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 4PX;
+    cursor: pointer;
+    text-transform: capitalize;
+}

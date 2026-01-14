@@ -2,23 +2,41 @@ import { useState, useEffect } from "react";
 import "./searchinput.css";
 
 export const Search = ({ queryterm, setparams, quality, genre, minimumRating, orderBy,sortby }) => {
+const getFiltersFromProps = () => ({
+  quality: quality || "all",
+  genre: genre || "all",
+  minimum_rating: minimumRating?.toString() || "0",
+  sort_by: sortby || "date_added",
+  order_by: orderBy || "desc",
+});
+
   const [value, setValue] = useState(queryterm || "");
 
   // State للفلاتر
-const [filters, setFilters] = useState({
-  quality: quality || "all",
-  genre: genre || "all",
-  minimum_rating: minimumRating || "0",
-sort_by: sortby || "date_added",
-   order_by: orderBy || "desc",
-});
+const [filters, setFilters] = useState(getFiltersFromProps);
+
 useEffect(() => {
-  setFilters(prev => ({
-    ...prev,
-    sort_by: sortby || "date_added",
-    order_by: orderBy || "desc",
-  }));
-}, [sortby, orderBy]);
+  setFilters(getFiltersFromProps());
+}, [quality, genre, minimumRating, sortby, orderBy]);
+const handleClear = () => {
+  setValue("");
+
+  setFilters({
+    quality: "all",
+    genre: "all",
+    minimum_rating: "0",
+    sort_by: "date_added",
+    order_by: "desc",
+  });
+
+  setparams(() => {
+    const p = new URLSearchParams();
+    p.set("page", 1);
+    return p;
+  });
+};
+
+
 
 const handleOrderChange = (e) => {
   const [sort_by, order_by] = e.target.value.split("-");
@@ -58,6 +76,7 @@ const handleOrderChange = (e) => {
       return newParams;
     });
   };
+
 
   return (
     <div className="search">
@@ -288,6 +307,7 @@ const handleOrderChange = (e) => {
                                             </select>
                 </div>
                 </div>
+                <button type="button" className="Clear" onClick={handleClear}>clear</button>
         </form>
       </div>
     </div>

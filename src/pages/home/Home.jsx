@@ -23,7 +23,7 @@ useEffect(() => {
 
   fetchdata();
  
-}, []); 
+}, [moviedata]); 
   return (
     <>
     <div className="banner">

@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Search } from "./searchinputs/Search";
 import ReactPaginate from "react-paginate";
+import "./browesermovie.css"
 
 export const Browesermovie = () => {
 
   const [params,setparams] = useSearchParams();
     const[datamovie ,setdatamovie] = useState([])
    const [pagecount, setpagecount] = useState(0);
+   const [loading , setloading] = useState(true)
 
 const limit = Number(params.get("limit")) || 20;
 const page = Number(params.get("page")) || 1;
@@ -28,6 +30,7 @@ const withRTRatings =
   useEffect(() => {
     const fetchMovies = async () => {
       try {
+        setloading(true)
         const params = new URLSearchParams({
           limit,
           page,
@@ -50,6 +53,9 @@ const withRTRatings =
         console.log(data.data.movies)
       } catch (error) {
         console.error(error);
+      }
+      finally{
+        setloading(false)
       }
     };
 
@@ -82,46 +88,59 @@ const withRTRatings =
     
     <Search queryterm={queryTerm} setparams = {setparams} quality={quality} genre={genre} minimumRating={minimumRating} orderBy={orderBy} sortby={ sortBy }  />
     <div className="broweser-content bg-[#1d1d1d] pt-10 pb-10" >
-    <div className="container grid grid-cols-4 gap-6 mt-8 bg-[#1d1d1d] ">
+    <div className="container  bg-[#1d1d1d] ">
+        <div className="paginate">
+  <ReactPaginate
+    breakLabel="..."
+    nextLabel="Next »"
+    previousLabel="« Prev"
+    onPageChange={handlePageClick}
+    pageRangeDisplayed={5}
+    pageCount={pagecount}
+    forcePage={page - 1}
+    renderOnZeroPageCount={null}
+  />
+</div>
+     <div className="movive-content grid grid-cols-4 gap-6 mt-8">
+            {loading ? (
+              // ✅ Shimmer skeleton
+              Array.from({ length: limit }).map((_, i) => (
+                <div
+                  key={i}
+                  className="bg-gray-700 rounded p-3 animate-pulse h-[320px]"
+                ></div>
+              ))
+            ) : datamovie.length > 0 ? (
+              datamovie.map((movie) => (
+                <div key={movie.id} className="bg-black text-white p-3 rounded">
+                  <img
+                    src={movie.medium_cover_image}
+                    alt={movie.title}
+                    className="rounded"
+                  />
+                  <h4 className="mt-2 font-bold">{movie.title}</h4>
+                  <p className="text-sm text-gray-400">Rating: {movie.rating}</p>
+                </div>
+              ))
+            ) : (
+              <p className="text-center col-span-4">No movies found</p>
+            )}
+          </div>
 
-   {datamovie.length > 0 ? (
-    datamovie.map(movie => (
-      <div key={movie.id} className="bg-black text-white p-3 rounded">
-        <img
-          src={movie.medium_cover_image}
-          alt={movie.title}
-          className="rounded"
-        />
-        <h4 className="mt-2 font-bold">{movie.title}</h4>
-        <p className="text-sm text-gray-400">
-          Rating: {movie.rating}
-        </p>
+          <div className="paginate mt-8">
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel="Next »"
+              previousLabel="« Prev"
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={5}
+              pageCount={pagecount}
+              forcePage={page - 1}
+              renderOnZeroPageCount={null}
+            />
+          </div>
+        </div>
       </div>
-    ))
-  ) : (
-    <p className="text-center col-span-4">No movies found</p>
-  )}
-</div>
-</div>
-<div className="paginte">
-  <div className="container">
-    <ReactPaginate
-  breakLabel="..."
-  nextLabel="Next >"
-  previousLabel="< Prev"
-  onPageChange={handlePageClick}
-  pageRangeDisplayed={5}
-  pageCount={pagecount}
-  forcePage={page - 1}
-  renderOnZeroPageCount={null}
-/>
-
-  </div>
-</div>
-
-
-
-    
     </>
-  )
+  );
 };
