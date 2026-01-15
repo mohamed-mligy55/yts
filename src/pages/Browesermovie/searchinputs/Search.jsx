@@ -1,27 +1,9 @@
-import { useState, useEffect } from "react";
-import "./searchinput.css";
+import { useState } from "react";
+import "./searchinput.css"
 
-export const Search = ({ queryterm, setparams, quality, genre, minimumRating, orderBy,sortby }) => {
-const getFiltersFromProps = () => ({
-  quality: quality || "all",
-  genre: genre || "all",
-  minimum_rating: minimumRating?.toString() || "0",
-  sort_by: sortby || "date_added",
-  order_by: orderBy || "desc",
-});
-
-  const [value, setValue] = useState(queryterm || "");
-
-  // State للفلاتر
-const [filters, setFilters] = useState(getFiltersFromProps);
-
-useEffect(() => {
-  setFilters(getFiltersFromProps());
-}, [quality, genre, minimumRating, sortby, orderBy]);
-const handleClear = () => {
-  setValue("");
-
-  setFilters({
+export const Search = ({ onSearch }) => {
+  const [value, setValue] = useState("");
+  const [filters, setFilters] = useState({
     quality: "all",
     genre: "all",
     minimum_rating: "0",
@@ -29,53 +11,52 @@ const handleClear = () => {
     order_by: "desc",
   });
 
-  setparams(() => {
-    const p = new URLSearchParams();
-    p.set("page", 1);
-    return p;
-  });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    onSearch({
+      query_term: value,
+      ...filters,
+      page: 1,
+    });
+  };
+
+  const handleClear = () => {
+    setValue("");
+    setFilters({
+      quality: "all",
+      genre: "all",
+      minimum_rating: "0",
+      sort_by: "date_added",
+      order_by: "desc",
+    });
+
+    onSearch({ page: 1 });
+  };
+  const handleChangeFilter = (e) => {
+  const { name, value } = e.target;
+  setFilters(prev => ({
+    ...prev,
+    [name]: value,
+  }));
 };
-
-
-
 const handleOrderChange = (e) => {
   const [sort_by, order_by] = e.target.value.split("-");
-
   setFilters(prev => ({
     ...prev,
     sort_by,
     order_by,
   }));
 };
+const defaultFilters = {
+  quality: "all",
+  genre: "all",
+  minimum_rating: "0",
+  sort_by: "date_added",
+  order_by: "desc",
+};
 
 
-  // تغيير أي فلتر
-  const handleChangeFilter = (e) => {
-    const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // Submit form
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setparams((prev) => {
-      const newParams = new URLSearchParams(prev);
-
-      // query term
-      newParams.set("query_term", value);
-      newParams.set("page", 1);
-
-      // تحديث باقي الفلاتر
-    Object.entries(filters).forEach(([key, val]) => {
-  if (val && val !== "all" && val !== "0") newParams.set(key, val);
-  else newParams.delete(key);
-});
-
-
-      return newParams;
-    });
-  };
 
 
   return (
@@ -90,6 +71,12 @@ const handleOrderChange = (e) => {
             onChange={(e) => setValue(e.target.value)}
           />
           <button type="submit">Submit</button>
+          {(value !== "" || JSON.stringify(filters) !== JSON.stringify(defaultFilters)) && (
+  <button type="button" className="Clear" onClick={handleClear}>
+    Clear
+  </button>
+)}
+
 
           <div className="allselect">
             <div className="selects">
@@ -307,7 +294,7 @@ const handleOrderChange = (e) => {
                                             </select>
                 </div>
                 </div>
-                <button type="button" className="Clear" onClick={handleClear}>clear</button>
+               
         </form>
       </div>
     </div>

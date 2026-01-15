@@ -1,94 +1,101 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+
 import { Search } from "./searchinputs/Search";
 import ReactPaginate from "react-paginate";
 import "./browesermovie.css"
 
 export const Browesermovie = () => {
 
-  const [params,setparams] = useSearchParams();
-    const[datamovie ,setdatamovie] = useState([])
-   const [pagecount, setpagecount] = useState(0);
-   const [loading , setloading] = useState(true)
-
-const limit = Number(params.get("limit")) || 20;
-const page = Number(params.get("page")) || 1;
-
-const quality = params.get("quality") || "";
-const minimumRating = Number(params.get("minimum_rating")) || 1;
-
-const queryTerm = params.get("query_term") || "";
-const genre = params.get("genre") || "";
-
-const sortBy = params.get("sort_by") || "rating";
-const orderBy = params.get("order_by") || "desc";
-
-const withRTRatings =
-  params.get("with_rt_ratings") === "true";
 
 
+  const [filters, setFilters] = useState({});
+  const [params, setparams] = useSearchParams();
+  const [datamovie, setdatamovie] = useState([]);
+  const [pagecount, setpagecount] = useState(0);
+  const [loading, setloading] = useState(true);
+
+  const limit = Number(params.get("limit")) || 20;
+  const page = Number(params.get("page")) || 1;
+
+  const quality = params.get("quality") || "";
+  const minimumRating = Number(params.get("minimum_rating")) || 1;
+
+  const queryTerm = params.get("query_term") || "";
+  const genre = params.get("genre") || "";
+
+  const sortBy = params.get("sort_by") || "rating";
+  const orderBy = params.get("order_by") || "desc";
+
+  const withRTRatings = params.get("with_rt_ratings") === "true";
+
+  // 🔹 تعريف fetchMovies خارج useEffect
+  const fetchMovies = async (fetchFilters) => {
+    try {
+      setloading(true);
+
+      // إذا جاي من filters، استعمله، وإلا استعمل params الحالية
+      const finalFilters = fetchFilters || {
+        limit,
+        page,
+        quality,
+        minimum_rating: minimumRating,
+        query_term: queryTerm,
+        genre,
+        sort_by: sortBy,
+        order_by: orderBy,
+        with_rt_ratings: withRTRatings,
+      };
+
+      const urlParams = new URLSearchParams(finalFilters);
+
+      const res = await fetch(`https://yts.bz/api/v2/list_movies.json?${urlParams}`);
+      const data = await res.json();
+
+      setdatamovie(data.data.movies || []);
+      setpagecount(Math.ceil(data.data.movie_count / limit));
+      console.log(data.data.movies);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setloading(false);
+    }
+  };
+
+  // 🔹 أول fetch عند mount أو تغير params
   useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        setloading(true)
-        const params = new URLSearchParams({
-          limit,
-          page,
-          quality,
-          minimum_rating: minimumRating,
-          query_term: queryTerm,
-          genre,
-          sort_by: sortBy,
-          order_by: orderBy,
-          with_rt_ratings: withRTRatings
-        });
+    fetchMovies();
+  }, [limit, page, quality, minimumRating, queryTerm, genre, sortBy, orderBy, withRTRatings]);
 
-        const res = await fetch(
-          `https://yts.bz/api/v2/list_movies.json?${params}`
-        );
-        const data = await res.json();
-        setdatamovie(data.data.movies || [])
-       setpagecount(Math.ceil(data.data.movie_count / limit));
+  // 🔹 fetch عند تغير filters من Search
+  useEffect(() => {
+    if (!filters.query_term) return;
+    fetchMovies(filters);
+  }, [filters]);
 
-        console.log(data.data.movies)
-      } catch (error) {
-        console.error(error);
-      }
-      finally{
-        setloading(false)
-      }
-    };
-
-    fetchMovies(); 
-  }, [
-    limit,
-    page,
-    quality,
-    minimumRating,
-    queryTerm,
-    genre,
-    sortBy,
-     orderBy,
-    withRTRatings,
-  ]);
+  // Pagination
   const handlePageClick = (event) => {
-  const selectedPage = event.selected + 1;
+    const selectedPage = event.selected + 1;
 
-  setparams(prev => {
-    const p = new URLSearchParams(prev);
-    p.set("page", selectedPage);
-    return p;
-  });
-};
+    setparams(prev => {
+      const p = new URLSearchParams(prev);
+      p.set("page", selectedPage);
+      return p;
+    });
+  };
 
-
+  // Search
+  const handleSearch = (data) => {
+    setFilters(data);
+  };
 
   return (
     <>
     
-    <Search queryterm={queryTerm} setparams = {setparams} quality={quality} genre={genre} minimumRating={minimumRating} orderBy={orderBy} sortby={ sortBy }  />
+    <Search  onSearch={handleSearch} />
     <div className="broweser-content bg-[#1d1d1d] pt-10 pb-10" >
     <div className="container  bg-[#1d1d1d] ">
+   
         <div className="paginate">
   <ReactPaginate
     breakLabel="..."
@@ -143,4 +150,4 @@ const withRTRatings =
       </div>
     </>
   );
-};
+}
