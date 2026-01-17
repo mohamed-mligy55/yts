@@ -21,6 +21,7 @@ export const Browesermovie = () => {
   const [pagecount, setPagecount] = useState(0);
   const [loading, setLoading] = useState(true);
   const limit = 20;
+const showPagination = !loading && datamovie.length > 0 && pagecount > 1;
 
   // 🔹 fetch دائمًا على حسب state
   useEffect(() => {
@@ -58,22 +59,27 @@ export const Browesermovie = () => {
   };
 
   return (
-    <>
+<>
       <Search onSearch={handleSearch} />
 
       <div className="broweser bg-[#1d1d1d] pt-10 pb-10">
         <div className="container">
-          <div className="paginate">
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel="Next »"
-            previousLabel="« Prev"
-            onPageChange={handlePageClick}
-            pageRangeDisplayed={5}
-            pageCount={pagecount}
-            forcePage={filters.page - 1}
-          />
-          </div>
+      {showPagination && (
+  <div className="paginate">
+    <ReactPaginate
+      breakLabel="..."
+      nextLabel="Next »"
+      previousLabel="« Prev"
+      onPageChange={handlePageClick}
+      pageRangeDisplayed={5}
+      pageCount={pagecount}
+      forcePage={(filters.page ?? 1) - 1}
+    />
+  </div>
+)}
+
+
+
 
           <div className="grid grid-cols-4 gap-6 mt-8 broweser-content ">
             {loading
@@ -101,19 +107,25 @@ export const Browesermovie = () => {
                 ))
               : <p className="col-span-4 text-center text-white">No movies found</p>}
           </div>
-          <div className="paginate">
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel="Next »"
-            previousLabel="« Prev"
-            onPageChange={handlePageClick}
-            pageRangeDisplayed={5}
-            pageCount={pagecount}
-            forcePage={filters.page - 1}
-          />
-          </div>
+  {showPagination && (
+  <div className="paginate">
+    <ReactPaginate
+      breakLabel="..."
+      nextLabel="Next »"
+      previousLabel="« Prev"
+      onPageChange={handlePageClick}
+      pageRangeDisplayed={5}
+      pageCount={pagecount}
+      forcePage={(filters.page ?? 1) - 1}
+    />
+  </div>
+)}
+
+
         </div>
       </div>
-    </>
-  );
-};
+      </>
+)
+}
+
+
