@@ -6,6 +6,7 @@ import { Login } from "./pages/login/Login";
 import { Signup } from "./pages/login/signup/Signup";
 import { Home } from "./pages/home/Home";
 import { Browesermovie } from "./pages/Browesermovie/Browesermovie";
+import { Moviedetails } from "./pages/MoviesDetails/Moviedetails";
 
 
 export default function App() {
@@ -14,7 +15,8 @@ export default function App() {
       {index:true,element:<Home/>},
       {path:"/login",element:<Login/>},
       {path:"/signup",element:<Signup/>},
-      {path:"/BroweserMovie" , element:<Browesermovie/>}
+      {path:"/BroweserMovie" , element:<Browesermovie/>},
+      {path:"/moviedetails/:id" , element:<Moviedetails/>}
    
     ]}
     

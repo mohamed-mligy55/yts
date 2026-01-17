@@ -1,153 +1,119 @@
-import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-
-import { Search } from "./searchinputs/Search";
+import React, { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
+import { Search } from "./searchinputs/Search";
 import "./browesermovie.css"
+import { FaRegStar } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
 
 export const Browesermovie = () => {
+  const [filters, setFilters] = useState({
+    query_term: "",
+    quality: "all",
+    genre: "all",
+    minimum_rating: 0,
+    sort_by: "rating",
+    order_by: "desc",
+    page: 1,
+  });
 
+  const [datamovie, setDatamovie] = useState([]);
+  const [pagecount, setPagecount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const limit = 20;
 
-
-  const [filters, setFilters] = useState({});
-  const [params, setparams] = useSearchParams();
-  const [datamovie, setdatamovie] = useState([]);
-  const [pagecount, setpagecount] = useState(0);
-  const [loading, setloading] = useState(true);
-
-  const limit = Number(params.get("limit")) || 20;
-  const page = Number(params.get("page")) || 1;
-
-  const quality = params.get("quality") || "";
-  const minimumRating = Number(params.get("minimum_rating")) || 1;
-
-  const queryTerm = params.get("query_term") || "";
-  const genre = params.get("genre") || "";
-
-  const sortBy = params.get("sort_by") || "rating";
-  const orderBy = params.get("order_by") || "desc";
-
-  const withRTRatings = params.get("with_rt_ratings") === "true";
-
-  // 🔹 تعريف fetchMovies خارج useEffect
-  const fetchMovies = async (fetchFilters) => {
-    try {
-      setloading(true);
-
-      // إذا جاي من filters، استعمله، وإلا استعمل params الحالية
-      const finalFilters = fetchFilters || {
-        limit,
-        page,
-        quality,
-        minimum_rating: minimumRating,
-        query_term: queryTerm,
-        genre,
-        sort_by: sortBy,
-        order_by: orderBy,
-        with_rt_ratings: withRTRatings,
-      };
-
-      const urlParams = new URLSearchParams(finalFilters);
-
-      const res = await fetch(`https://yts.bz/api/v2/list_movies.json?${urlParams}`);
-      const data = await res.json();
-
-      setdatamovie(data.data.movies || []);
-      setpagecount(Math.ceil(data.data.movie_count / limit));
-      console.log(data.data.movies);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setloading(false);
-    }
-  };
-
-  // 🔹 أول fetch عند mount أو تغير params
+  // 🔹 fetch دائمًا على حسب state
   useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        setLoading(true);
+        const urlParams = new URLSearchParams({
+          limit,
+          ...filters,
+        });
+
+        const res = await fetch(`https://yts.bz/api/v2/list_movies.json?${urlParams}`);
+        const data = await res.json();
+
+        setDatamovie(data.data?.movies || []);
+        setPagecount(Math.ceil(data.data.movie_count / limit));
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchMovies();
-  }, [limit, page, quality, minimumRating, queryTerm, genre, sortBy, orderBy, withRTRatings]);
-
-  // 🔹 fetch عند تغير filters من Search
-  useEffect(() => {
-    if (!filters.query_term) return;
-    fetchMovies(filters);
-  }, [filters]);
+  }, [filters]); // كل ما filters تتغير، fetch
 
   // Pagination
   const handlePageClick = (event) => {
-    const selectedPage = event.selected + 1;
-
-    setparams(prev => {
-      const p = new URLSearchParams(prev);
-      p.set("page", selectedPage);
-      return p;
-    });
+    setFilters(prev => ({ ...prev, page: event.selected + 1 }));
   };
 
-  // Search
-  const handleSearch = (data) => {
-    setFilters(data);
+  // Search + Filter
+  const handleSearch = (newFilters) => {
+    setFilters(prev => ({ ...prev, ...newFilters, page: 1 }));
   };
 
   return (
     <>
-    
-    <Search  onSearch={handleSearch} />
-    <div className="broweser-content bg-[#1d1d1d] pt-10 pb-10" >
-    <div className="container  bg-[#1d1d1d] ">
-   
-        <div className="paginate">
-  <ReactPaginate
-    breakLabel="..."
-    nextLabel="Next »"
-    previousLabel="« Prev"
-    onPageChange={handlePageClick}
-    pageRangeDisplayed={5}
-    pageCount={pagecount}
-    forcePage={page - 1}
-    renderOnZeroPageCount={null}
-  />
-</div>
-     <div className="movive-content grid grid-cols-4 gap-6 mt-8">
-            {loading ? (
-              // ✅ Shimmer skeleton
-              Array.from({ length: limit }).map((_, i) => (
-                <div
-                  key={i}
-                  className="bg-gray-700 rounded p-3 animate-pulse h-[320px]"
-                ></div>
-              ))
-            ) : datamovie.length > 0 ? (
-              datamovie.map((movie) => (
-                <div key={movie.id} className="bg-black text-white p-3 rounded">
-                  <img
-                    src={movie.medium_cover_image}
-                    alt={movie.title}
-                    className="rounded"
-                  />
-                  <h4 className="mt-2 font-bold">{movie.title}</h4>
-                  <p className="text-sm text-gray-400">Rating: {movie.rating}</p>
-                </div>
-              ))
-            ) : (
-              <p className="text-center col-span-4">No movies found</p>
-            )}
+      <Search onSearch={handleSearch} />
+
+      <div className="broweser bg-[#1d1d1d] pt-10 pb-10">
+        <div className="container">
+          <div className="paginate">
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="Next »"
+            previousLabel="« Prev"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={5}
+            pageCount={pagecount}
+            forcePage={filters.page - 1}
+          />
           </div>
 
-          <div className="paginate mt-8">
-            <ReactPaginate
-              breakLabel="..."
-              nextLabel="Next »"
-              previousLabel="« Prev"
-              onPageChange={handlePageClick}
-              pageRangeDisplayed={5}
-              pageCount={pagecount}
-              forcePage={page - 1}
-              renderOnZeroPageCount={null}
-            />
+          <div className="grid grid-cols-4 gap-6 mt-8 broweser-content ">
+            {loading
+              ? Array.from({ length: limit }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="bg-gray-700 rounded p-3 animate-pulse h-[320px]"
+                  />
+                ))
+              : datamovie.length
+              ? datamovie.map((movie) => (
+                  <div className='box ' key={movie.id}>
+                         <img src={movie.medium_cover_image}/>
+                         <div className='title text-white font-bold'>{movie.title}</div>
+                         <span className='text-[#919191]'>{movie.year}</span>
+                         <div className='info  '>
+                           <FaRegStar className='text-[#6ac045] text-4xl'/>
+                           <h2>{(movie.rating / 10).toFixed(2)}</h2>
+                           <h2>{movie.genres[0]}</h2>
+                           <h2>{movie.genres[1]}</h2>
+                           <Link>View Details</Link>
+                           
+                         </div>
+                         </div>
+                ))
+              : <p className="col-span-4 text-center text-white">No movies found</p>}
+          </div>
+          <div className="paginate">
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="Next »"
+            previousLabel="« Prev"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={5}
+            pageCount={pagecount}
+            forcePage={filters.page - 1}
+          />
           </div>
         </div>
       </div>
     </>
   );
-}
+};
