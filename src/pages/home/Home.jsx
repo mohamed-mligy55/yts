@@ -3,27 +3,32 @@ import { Link } from 'react-router-dom'
 import "./home.css"
 import { FaRegStar } from "react-icons/fa";
 import { FaWifi } from "react-icons/fa";
+import { useQuery } from '@tanstack/react-query';
 
 
 export const Home = () => {
-  let [moviedata , setmoviedata] = useState([])
-useEffect(() => {
+
+
   const fetchdata = async () => {
     try {
       const res = await fetch(
         "https://yts.bz/api/v2/list_movies.json"
       );
       const data = await res.json();
-      setmoviedata(data.data.movies);
+       return data.data.movies;
       console.log(data)
     } catch (error) {
       console.log(error);
     }
   };
+   const{data:moviedata=[], isLoading , error}=useQuery({
+    queryKey:"movies",
+    queryFn:fetchdata
+   })
 
-  fetchdata();
+  
  
-}, [moviedata]); 
+
   return (
     <>
     <div className="banner">

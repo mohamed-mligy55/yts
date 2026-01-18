@@ -24,29 +24,34 @@ export const Browesermovie = () => {
 const showPagination = !loading && datamovie.length > 0 && pagecount > 1;
 
   // 🔹 fetch دائمًا على حسب state
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        setLoading(true);
-        const urlParams = new URLSearchParams({
-          limit,
-          ...filters,
-        });
+useEffect(() => {
+  const fetchMovies = async () => {
+    try {
+      setLoading(true);
 
-        const res = await fetch(`https://yts.bz/api/v2/list_movies.json?${urlParams}`);
-        const data = await res.json();
+      const params = { ...filters, limit };
+      // هنا optional: لو عايزة ما يبعتش query_term نهائي
+      // delete params.query_term;
 
-        setDatamovie(data.data?.movies || []);
-        setPagecount(Math.ceil(data.data.movie_count / limit));
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+      const urlParams = new URLSearchParams(params);
+      const res = await fetch(`https://yts.bz/api/v2/list_movies.json?${urlParams}`);
+      const data = await res.json();
 
-    fetchMovies();
-  }, [filters]); // كل ما filters تتغير، fetch
+      setDatamovie(data.data?.movies || []);
+      setPagecount(Math.ceil(data.data.movie_count / limit));
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchMovies();
+}, [filters]);
+
+
+
+
 
   // Pagination
   const handlePageClick = (event) => {
@@ -54,9 +59,11 @@ const showPagination = !loading && datamovie.length > 0 && pagecount > 1;
   };
 
   // Search + Filter
-  const handleSearch = (newFilters) => {
-    setFilters(prev => ({ ...prev, ...newFilters, page: 1 }));
-  };
+const handleSearch = (newFilters) => {
+  // overwrite state باللي جاي من Search
+  setFilters({ ...newFilters });
+};
+
 
   return (
 <>

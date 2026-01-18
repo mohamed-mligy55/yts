@@ -14,25 +14,57 @@ export const Search = ({ onSearch }) => {
   const [filters, setFilters] = useState(INITIAL_FILTERS);
   const [hasSearched, setHasSearched] = useState(false); // حالة الضغط على Search
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // نبعت الريكويست فقط لو فيه Search أو فلتر
-    const isFiltered =
-      query.trim() !== "" ||
-      Object.keys(INITIAL_FILTERS).some(key => filters[key] !== INITIAL_FILTERS[key]);
+const handleSubmit = (e) => {
+  e.preventDefault();
 
-    if (isFiltered) {
-      onSearch({ query_term: query, ...filters, page: 1 });
-      setHasSearched(true); // فعلنا ظهور Clear بعد الضغط على Search
-    }
-  };
+  // نبعت payload دائمًا حتى لو فاضي
+  onSearch({
+    query_term: query,         // ممكن يكون ""
+    quality: filters.quality,
+    genre: filters.genre,
+    minimum_rating: filters.minimum_rating,
+    sort_by: filters.sort_by,
+    order_by: filters.order_by,
+    page: 1,
+    limit: filters.limit || 20, // اختياري
+  });
 
-  const handleClear = () => {
-    setQuery("");
-    setFilters(INITIAL_FILTERS);
-    setHasSearched(false); // رجعنا الحالة قبل البحث
-    onSearch({ ...INITIAL_FILTERS, page: 1 }); // نبعت الريكويست لتصفية النتائج
-  };
+  setHasSearched(true); // فعل ظهور Clear
+};
+
+
+const handleClear = () => {
+  // input فاضي
+  setQuery(""); 
+
+  // كل الفلاتر فاضية
+  setFilters({
+    query_term: "",
+    quality: "",
+    genre: "",
+    minimum_rating: "",
+    sort_by: "",
+    order_by: "",
+    page: "",
+    limit: "",
+  });
+
+  setHasSearched(false);
+
+  // 🔹 بعتي payload كله فاضي للـ Network
+  onSearch({
+    query_term: "",
+    quality: "",
+    genre: "",
+    minimum_rating: "",
+    sort_by: "",
+    order_by: "",
+    page: "",
+    limit: "",
+  });
+};
+
+
 
   const handleChangeFilter = (e) => {
     const { name, value } = e.target;
