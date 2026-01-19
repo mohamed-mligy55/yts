@@ -6,17 +6,9 @@ import { FaRegStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 
-export const Browesermovie = () => {
-  const [filters, setFilters] = useState({
-    query_term: "",
-    quality: "all",
-    genre: "all",
-    minimum_rating: 0,
-    sort_by: "rating",
-    order_by: "desc",
-    page: 1,
-  });
 
+export const Browesermovie = () => {
+  const [filters, setFilters] = useState(null)
   const [datamovie, setDatamovie] = useState([]);
   const [pagecount, setPagecount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -29,16 +21,18 @@ useEffect(() => {
     try {
       setLoading(true);
 
-      const params = { ...filters, limit };
-      // هنا optional: لو عايزة ما يبعتش query_term نهائي
-      // delete params.query_term;
+      let url = "https://yts.bz/api/v2/list_movies.json";
 
-      const urlParams = new URLSearchParams(params);
-      const res = await fetch(`https://yts.bz/api/v2/list_movies.json?${urlParams}`);
+      if (filters) {
+        const params = new URLSearchParams(filters);
+        url += `?${params}`;
+      }
+
+      const res = await fetch(url);
       const data = await res.json();
 
       setDatamovie(data.data?.movies || []);
-      setPagecount(Math.ceil(data.data.movie_count / limit));
+      setPagecount(Math.ceil(data.data.movie_count / 20));
     } catch (err) {
       console.error(err);
     } finally {
@@ -55,16 +49,27 @@ useEffect(() => {
 
   // Pagination
   const handlePageClick = (event) => {
-    setFilters(prev => ({ ...prev, page: event.selected + 1 }));
+ setFilters(prev => ({
+  ...(prev || {}),
+  page: event.selected + 1,
+}));
   };
 
   // Search + Filter
 const handleSearch = (newFilters) => {
-  // overwrite state باللي جاي من Search
-  setFilters({ ...newFilters });
+  if (!newFilters) {
+    // Clear
+    setFilters(null);
+    return;
+  }
+
+  setFilters({ ...newFilters, page: 1 });
 };
 
 
+
+
+     
   return (
 <>
       <Search onSearch={handleSearch} />
@@ -80,7 +85,7 @@ const handleSearch = (newFilters) => {
       onPageChange={handlePageClick}
       pageRangeDisplayed={5}
       pageCount={pagecount}
-      forcePage={(filters.page ?? 1) - 1}
+    forcePage={((filters?.page ?? 1) - 1)}
     />
   </div>
 )}
@@ -105,8 +110,8 @@ const handleSearch = (newFilters) => {
                          <div className='info  '>
                            <FaRegStar className='text-[#6ac045] text-4xl'/>
                            <h2>{(movie.rating / 10).toFixed(2)}</h2>
-                           <h2>{movie.genres[0]}</h2>
-                           <h2>{movie.genres[1]}</h2>
+                           <h2>{movie.genres?.[0]}</h2>
+                           <h2>{movie.genres?.[1]}</h2>
                            <Link>View Details</Link>
                            
                          </div>
@@ -123,7 +128,8 @@ const handleSearch = (newFilters) => {
       onPageChange={handlePageClick}
       pageRangeDisplayed={5}
       pageCount={pagecount}
-      forcePage={(filters.page ?? 1) - 1}
+      forcePage={((filters?.page ?? 1) - 1)}
+
     />
   </div>
 )}

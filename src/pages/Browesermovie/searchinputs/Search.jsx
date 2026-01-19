@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./searchinput.css";
 
+
 const INITIAL_FILTERS = {
   quality: "all",
   genre: "all",
@@ -45,23 +46,14 @@ const handleClear = () => {
     minimum_rating: "",
     sort_by: "",
     order_by: "",
-    page: "",
-    limit: "",
+    page: 1,
+   
   });
 
   setHasSearched(false);
 
   // 🔹 بعتي payload كله فاضي للـ Network
-  onSearch({
-    query_term: "",
-    quality: "",
-    genre: "",
-    minimum_rating: "",
-    sort_by: "",
-    order_by: "",
-    page: "",
-    limit: "",
-  });
+  onSearch(null);
 };
 
 
@@ -75,7 +67,6 @@ const handleClear = () => {
     const [sort_by, order_by] = e.target.value.split("-");
     setFilters(prev => ({ ...prev, sort_by, order_by }));
   };
-
   return (
     <div className="search">
       <div className="container">

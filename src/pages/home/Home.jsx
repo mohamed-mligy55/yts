@@ -22,7 +22,7 @@ export const Home = () => {
     }
   };
    const{data:moviedata=[], isLoading , error}=useQuery({
-    queryKey:"movies",
+    queryKey:["movies"],
     queryFn:fetchdata
    })
 
