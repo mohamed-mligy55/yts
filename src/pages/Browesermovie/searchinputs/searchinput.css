@@ -40,12 +40,12 @@
 .input-group {
     display: flex;
     align-items: center;
-    gap: 44px; /* نفس المسافة القديمة */
+   
 }
 
 .buttons {
     display: flex;
-    gap: 10px;
+    gap: 5px;
 }
 
 .search form input {
