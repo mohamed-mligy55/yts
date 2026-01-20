@@ -66,13 +66,15 @@
 }
 .search form .allselect {
     display: flex;
-    margin: 40px auto;
-  
+
+  gap: 40px;
+margin: 20px 0;  
 }
 .search form .allselect .selects {
      
     width: 130px;
-    margin-right: 20px;
+    
+
    
 }
 .search form .allselect .selects p {
