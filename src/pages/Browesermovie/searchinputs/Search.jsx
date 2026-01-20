@@ -71,25 +71,31 @@ const handleClear = () => {
     <div className="search">
       <div className="container">
         <form onSubmit={handleSubmit}>
-       
-          
-          <h3>Search Term:</h3>
-          <input
-            type="search"
-            placeholder="Search"
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-          />
      
-         
-          <button type="submit">Search</button>
+    <h3>Search Term:</h3>
 
-          {/* يظهر Clear فقط بعد الضغط على Search */}
-          {hasSearched && (
-            <button type="button" onClick={handleClear} className="clear">
-              Clear
-            </button>
-          )}
+<div className="input-group">
+  <input
+    type="search"
+    placeholder="Search"
+    value={query}
+    onChange={e => setQuery(e.target.value)}
+  />
+
+  <div className="buttons">
+    <button type="submit">Search</button>
+
+    {hasSearched && (
+      <button
+        type="button"
+        onClick={handleClear}
+        className="clear"
+      >
+        Clear
+      </button>
+    )}
+  </div>
+</div>
          
          
      
