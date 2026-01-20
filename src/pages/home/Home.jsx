@@ -70,8 +70,8 @@ export const Home = () => {
         <div className='info  '>
           <FaRegStar className='text-[#6ac045] text-4xl'/>
           <h2>{(movie.rating / 10).toFixed(2)}</h2>
-          <h2>{movie.genres[0]}</h2>
-          <h2>{movie.genres[1]}</h2>
+          <h2>{movie.genres?.[0]}</h2>
+          <h2>{movie.genres?.[1]}</h2>
           <Link>View Details</Link>
           
         </div>
@@ -101,8 +101,8 @@ export const Home = () => {
         <div className='info  '>
           <FaRegStar className='text-[#6ac045] text-4xl'/>
           <h2>{(movie.rating / 10).toFixed(2)}</h2>
-          <h2>{movie.genres[0]}</h2>
-          <h2>{movie.genres[1]}</h2>
+          <h2>{movie.genres?.[0]}</h2>
+          <h2>{movie.genres?.[1]}</h2>
           <Link>View Details</Link>
           
         </div>

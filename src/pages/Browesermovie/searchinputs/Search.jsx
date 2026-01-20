@@ -71,6 +71,8 @@ const handleClear = () => {
     <div className="search">
       <div className="container">
         <form onSubmit={handleSubmit}>
+       
+          
           <h3>Search Term:</h3>
           <input
             type="search"
@@ -78,6 +80,8 @@ const handleClear = () => {
             value={query}
             onChange={e => setQuery(e.target.value)}
           />
+     
+          <div className="buttons">
           <button type="submit">Search</button>
 
           {/* يظهر Clear فقط بعد الضغط على Search */}
@@ -86,6 +90,8 @@ const handleClear = () => {
               Clear
             </button>
           )}
+          </div>
+     
 
           <div className="allselect">
             <div className="selects">
