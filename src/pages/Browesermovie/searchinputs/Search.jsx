@@ -81,7 +81,7 @@ const handleClear = () => {
             onChange={e => setQuery(e.target.value)}
           />
      
-          <div className="buttons">
+         
           <button type="submit">Search</button>
 
           {/* يظهر Clear فقط بعد الضغط على Search */}
@@ -90,7 +90,8 @@ const handleClear = () => {
               Clear
             </button>
           )}
-          </div>
+         
+         
      
 
           <div className="allselect">
