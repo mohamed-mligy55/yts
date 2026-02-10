@@ -49,16 +49,20 @@
 .banner .container .banner-content {
         padding: 50px 0;
 }
-.banner .container .banner-content img {
+.banner .container .banner-content .image {
+        width: 100%;
+        height: 350px;
+}
+.banner .container .banner-content .img {
         border: 5px solid white;
         transition: 0.3s;
         width: 100%;
-        height: auto;
+      height: 100%;
         display: block;
       
 }
 
-.banner .container .banner-content img:hover {
+.banner .container .banner-content .img:hover {
         border: 5px solid #6ac045;
 }
 .banner .container .banner-content .box {
@@ -66,9 +70,9 @@
 }
 .banner .container .banner-content .box .info-content {
           position: absolute;
- top: 28%;
-    left: 18%;
-    transform: translateY(-12%);
+inset-block-start: 50%;
+inset-inline-start: 50%;
+transform: translate(-50% , -50%);
     font-size: 25px;
     font-weight: bold;
     display: flex;
@@ -97,23 +101,30 @@
         gap: 30px;
         
 }
-.broweserall .container .broweser-content img {
+.broweserall .container .broweser-content .image {
+        width: 100%;
+        height: 350px;
+}
+.broweserall .container .broweser-content .img {
         border: 5px solid white;
         transition: 0.3s;
+        width: 100%;
+        height: 100%;
+        display: block;
       
 }
 
-.broweserall .container .broweser-content img:hover {
+.broweserall .container .broweser-content .img:hover {
         border: 5px solid #6ac045;
 }
 .broweserall .container .broweser-content .box {
         position: relative;
 }
-.broweserall .container .broweser-content .box .info {
+.broweserall .container .broweser-content .box .info-content {
           position: absolute;
- top: 28%;
-    left: 18%;
-    transform: translateY(-12%);
+inset-block-start: 50%;
+inset-inline-start: 50%;
+transform: translate(-50% , -50%);
     font-size: 25px;
     font-weight: bold;
     display: flex;
@@ -122,17 +133,75 @@
     margin: 0 auto;
     display: none;
     transition: 0.2s;
+    text-align: center;
      
 }
-.broweserall .container .broweser-content .box .info h2 {
+.broweserall .container .broweser-content .box:hover .info-content {
+        display: inline-flex;
+}
+.broweserall .container .broweser-content .box .info-content h2 {
        color: white;
 }
-.broweserall .container .broweser-content .box .info a {
+.broweserall .container .broweser-content .box .info-content a {
         background-color: #6ac045;
         color: white;
         padding: 10px 20px;
         font-size: 14px;
 }
-.broweserall .container .broweser-content .box:hover .info {
+.up {
+        padding: 50px 0;
+}
+.up .container .up-content {
+           display: grid;
+        grid-template-columns: repeat(auto-fill,minmax(250px , 1fr));
+        gap: 30px;
+        margin-top: 30px;
+}
+        .up .container .up-content .image {
+         
+        
+}
+        
+       .up .container  .up-content .box img {
+        border: 5px solid white;
+        transition: 0.3s;
+        width: 100%;
+        height: 100%;
+        display: block;
+      
+}
+
+.up .container .up-content .img:hover {
+        border: 5px solid #6ac045;
+}
+.up .container .up-content .box {
+        position: relative;
+}
+.up .container .up-content .box .info-content {
+          position: absolute;
+inset-block-start: 50%;
+inset-inline-start: 50%;
+transform: translate(-50% , -50%);
+    font-size: 25px;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    display: none;
+    transition: 0.2s;
+    text-align: center;
+     
+}
+.up .container .up-content .box:hover .info-content {
         display: inline-flex;
+}
+.up .container .up-content .box .info-content h2 {
+       color: white;
+}
+.up .container .up-content .box .info-content a {
+        background-color: #6ac045;
+        color: white;
+        padding: 10px 20px;
+        font-size: 14px;
 }

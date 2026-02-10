@@ -3,10 +3,10 @@ import { Outlet } from 'react-router-dom'
 import { Header } from '../header/Header'
 import { Footer } from '../footer/Footer'
 
-export const Layout = () => {
+export const Layout = ({ openLogin, openSignup }) => {
   return (
     <>
-    <Header/>
+    <Header openLogin={openLogin} openSignup={openSignup}/>
    <Outlet></Outlet>
    <Footer/>
    </>

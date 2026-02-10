@@ -4,7 +4,10 @@ import { Link } from 'react-router-dom';
 import "./header.css"
 
 
-export const Header = () => {
+
+
+export const Header = ({ openLogin, openSignup }) => {
+  
   return (
     <>
     <header className='flex items-center justify-between pl-10 pr-10 bg-[#1d1d1d] '>
@@ -35,9 +38,22 @@ export const Header = () => {
           <li><Link to='Trending' className='text-sm p-2 text-[#919191] font-bold transition duration-300 hover:text-white'>Trending</Link></li>
           <li><Link to='Browesermovie' className='text-sm p-2 text-[#919191] font-bold transition duration-300 hover:text-white'>Browesermovie</Link></li>
         </ul>
-        <ul className='flex items-center p-4'>
-          <li><Link to='login' className='p-2 text-sm transition duration-300 text-white font-bold hover:text-[#919191] '>Login</Link></li>
-          <li><Link to='signup' className='p-2 text-sm transition duration-300 text-white font-bold hover:text-[#919191] '>SignUp</Link></li>
+        <ul className='flex items-center p-4 login'>
+   <button className='p-2 text-sm text-[#919191] font-bold transition duration-300 hover:text-white cursor-pointer'
+        onClick={openLogin}
+        
+      >
+        Login
+      </button>
+
+      <button className='p-2 text-sm text-[#919191] font-bold transition duration-300 hover:text-white cursor-pointer'
+        onClick={openSignup}
+        
+      >
+         Register
+      </button>
+
+
         </ul>
       </nav>
     </header>
