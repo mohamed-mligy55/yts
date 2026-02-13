@@ -20,6 +20,35 @@
     }
   
 }
+.shimmer {
+  position: relative;
+  overflow: hidden;
+  background: #1f1f1f;
+  border-radius: 8px;
+}
+
+.shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150px;
+  height: 100%;
+  width: 150px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: shimmer 1.2s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    left: 100%;
+  }
+}
+
 
 
 .banner .container .overlay {
@@ -73,10 +102,12 @@
     .banner .container .landing-content .box-info .links {
         display: flex;
         flex-direction: column;
-        gap: 30px;
+        gap: 4px;
     }
     .banner .container .landing-content .box-info .links .quailty {
-      
+      display: flex;
+    flex-direction: column;
+    gap: 9px;
     }
 
       .banner .container .landing-content .box-info .links p {
@@ -91,8 +122,17 @@
         border: 1px solid rgba(255, 255, 255, .16);
         color: #fff;
         font-size:1rem;
-    margin: 2px;
+            width: fit-content;
+
          }
+            .banner .container .landing-content .box-info .links .download{
+                display:flex;
+                flex-direction:column;
+                gap:5px
+            }
+             .banner .container .landing-content .box-info .links .download {
+                width:fit-content;
+             }
           .banner .container .landing-content .box-info .links span {
                 font-size: 17px;
     color: #9C969C;
@@ -188,6 +228,16 @@
   overflow: hidden;
   cursor: pointer;
 }
+@media(max-width: 992px) {
+    .media-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media(max-width: 767px) {
+    .media-row {
+        grid-template-columns: 1fr;
+    }
+}
 
 .media-item img {
   width: 100%;
@@ -242,6 +292,11 @@
 .main-content .casts-section .container > div {
     flex-basis: 45%;
 
+}
+@media(max-width:767px) {
+    .main-content .casts-section .container > div {
+        flex-basis: 100%;
+    }
 }
 .main-content .casts-section .container .summary {
     display: flex;
@@ -307,6 +362,7 @@ display: flex;
 flex-direction: column;
 gap: 10px;
 }
+
 .comment-section .container .comments  h1{
     color: white;
     font-size: 25px;
@@ -326,10 +382,22 @@ gap: 10px;
         display: flex;
     justify-content: space-around;
         align-items: center;
-        padding: 15px;
-      
-      
-     
+        padding: 15px;    
+}
+@media(max-width: 767px) {
+    .comment-section .container {
+        flex-direction: column;
+    }
+    .comment-section .container .comments,
+    .comment-section .container .reviews {
+        width: 100%;
+        flex-basis: 100%;
+    }
+    .comment-section .container .comments .reviews-content .box {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
 }
 .comment-section .container .comments .reviews-content .box .image img {
 width: 50px;
@@ -341,6 +409,7 @@ border-radius: 50%;
     gap: 19px;
 
 }
+
 .comment-section .container .comments .reviews-content .box .info .name p:first-child {
     color: #919191;;
 }

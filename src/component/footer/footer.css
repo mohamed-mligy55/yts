@@ -42,3 +42,19 @@ footer ul li a{
         color: #919191;
    padding-right: 15px;
 }
+@media (max-width: 767px) {
+    footer .container .footer-content {
+        gap: 8px;
+        font-size: 14px;
+    }
+    footer ul {
+        flex-direction: column;
+    }
+    footer ul li {
+        width: 100%;
+        text-align: center;
+    }
+     footer p {
+        width:400px
+     }
+}

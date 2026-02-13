@@ -39,9 +39,7 @@ export const AuthModal = ({ open, close, tab, setTab }) => {
             }`}
           >
             Signup
-            {tab === "signup" && (
-              <span className="absolute left-1/2 -bottom-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            )}
+         
           </button>
         </div>
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import "./home.css"
 import { FaRegStar } from "react-icons/fa";
-import { FaWifi } from "react-icons/fa";
+
 import { useQuery } from '@tanstack/react-query';
 
 

@@ -24,7 +24,7 @@ const[trending , settrending]= useState([])
         <h2 className='text-trending '>24h YIFY Trending Movies</h2>
         <div className='trending-content'>
            {trending.map((trending)=>(
-            <div className='box'>
+            <div className='box' key={trending.id}>
                 <Link to={`/moviedetails/${trending.id}`}>
         <div className='image'>
          <img className='img'
