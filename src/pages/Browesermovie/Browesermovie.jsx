@@ -5,6 +5,7 @@ import { FaRegStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./browesermovie.css"
 
+
 const API_KEY = "76f92edf83690ef3b8d8d4f8bb41c35f";
 const limit = 20
 
@@ -47,9 +48,10 @@ if (query) {
 
       const res = await fetch(url);
       const data = await res.json();
+      console.log(data)
 
       setDatamovie(data.results || []);
-      setPagecount(data.total_pages / limit || 1);
+      setPagecount(data.total_pages  );
       setLoading(false);
     };
 

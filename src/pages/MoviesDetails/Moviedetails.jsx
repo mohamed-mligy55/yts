@@ -96,21 +96,21 @@ setreview(reviewsData.results || []);
 
         {/* ================= POSTER ================= */}
         <div className="box">
-          <div className="image">
-            {loading ? (
-              <div className="shimmer" style={{ width: 200, height: 300 }}></div>
-            ) : (
-              <img
-                className="img"
-                src={
-                  moviedetails.poster_path
-                    ? `https://image.tmdb.org/t/p/w200${moviedetails.poster_path}`
-                    : "/no-image.png"
-                }
-                alt={moviedetails.title}
-              />
-            )}
-          </div>
+         <div className="image">
+  {loading ? (
+    <div className="shimmer" style={{ width: 200, height: 300 }}></div>
+  ) : moviedetails.poster_path ? (
+    <img
+      className="img"
+      src={`https://image.tmdb.org/t/p/w200${moviedetails.poster_path}`}
+      alt={moviedetails.title}
+    />
+  ) : (
+    <div className="no-image">
+      <p>No Image Available</p>
+    </div>
+  )}
+</div>
 
           {loading ? (
             <div

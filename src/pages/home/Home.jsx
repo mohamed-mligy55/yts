@@ -105,7 +105,7 @@ const  API_KEY  = "76f92edf83690ef3b8d8d4f8bb41c35f"
           <h4 className='text-white'>Latest YIFY Movies Torrents</h4>
           <Link className='text-[#919191] text-sm' >Browser All</Link>
         </div>
-        <div className='broweser-content pt-10'>
+        <div className='broweser-content p-6'>
         {moviedata.slice(4,12).map((movie)=>{
           return(
           <div className='box ' key={movie.id}>

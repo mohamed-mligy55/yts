@@ -76,11 +76,21 @@
      aspect-ratio: 2 / 3;
     object-fit: cover;
   }
+  .no-image {
+  width: 200px;
+  height: 300px;
+  background: #222;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
 
     .banner .container .landing-content .box-info {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+
     }
     .banner .container .landing-content .box-info .head {
         display: flex;

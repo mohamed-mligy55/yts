@@ -33,12 +33,15 @@
     flex-direction: column;
     gap: 20px;
 }
-.search form .button-input {
+ 
+    .search form .button-input {
       display: flex;
-    gap: 45px;
+    gap: 35px;
     align-items: center;
   
 }
+  
+
 
 .search form h3 {
       gap: 10px;
@@ -46,14 +49,16 @@
     font-size: 1.35em;
     color: #5a5a5a;
 }
-
-
-
-.search form .input-group {
-        display: flex;
- flex-direction: column;
- gap: 10px;
+  @media (max-width: 767px){
+.search form .button-input {
+         display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
+  }
+
+
+
 .search form input {
     border: 0;
     color: #a2a2a2;
