@@ -39,7 +39,7 @@ const[trending , settrending]= useState([])
         </Link>
         <div>
         <p className='title text-white font-bold'>{trending.title}</p>
-        <span className='text-[#919191]'>{trending.genre_ids?.[1]}</span>
+         <p className='text-[#919191]'>{trending.release_date?.slice(0, 4)}</p>
         </div>
         <div className='info-content'>
           <FaRegStar className='text-[#6ac045] text-4xl'/>

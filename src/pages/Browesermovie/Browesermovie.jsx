@@ -130,7 +130,7 @@ const showPagination =
               </Link>
               <div>
               <p className='title text-white font-bold'>{movie.title}</p>
-              <span className='text-[#919191]'>{movie.genre_ids?.[1]}</span>
+                <p className='text-[#919191]'>{movie.release_date?.slice(0, 4)}</p>
               </div>
               <div className='info-content'>
                 <FaRegStar className='text-[#6ac045] text-4xl '/>

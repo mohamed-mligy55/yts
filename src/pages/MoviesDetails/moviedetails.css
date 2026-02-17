@@ -216,6 +216,9 @@
          .main-content {
              background-color: #1d1d1d;
    padding: 20px;
+          display: flex;
+        flex-direction: column;
+        gap:30px;
          }
          .image-section {
         background-color: #1d1d1d;

@@ -7,7 +7,7 @@ import { Home } from "./pages/home/Home";
 import { Browesermovie } from "./pages/Browesermovie/Browesermovie";
 import { Moviedetails } from "./pages/MoviesDetails/Moviedetails";
 import { Trending } from "./pages/Trending/Trending";
-import { AuthModal } from "./pages/authmodel/authmodel";
+import {AuthModal} from "./pages/authmodel/Authmodel" ;
 import { useState } from "react";
 
 

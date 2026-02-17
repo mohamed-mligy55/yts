@@ -60,7 +60,7 @@ const  API_KEY  = "76f92edf83690ef3b8d8d4f8bb41c35f"
         <div className='banner-content pt-5 pb-5'>
 {moviedata.slice(0,4).map((movie)=>{
   return(
-<>
+
    
       <div className='box ' key={movie.id}>
       <Link to={`/moviedetails/${movie.id}`}>
@@ -91,7 +91,7 @@ const  API_KEY  = "76f92edf83690ef3b8d8d4f8bb41c35f"
         </div>
         </div>
 
-   </>
+
   )
 })}
    </div>
