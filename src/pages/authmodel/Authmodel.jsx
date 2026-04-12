@@ -21,7 +21,7 @@ export const AuthModal = ({ open, close, tab, setTab }) => {
         <div className="flex border-b text-sm font-medium">
           <button
             onClick={() => setTab("login")}
-            className={`w-1/2 py-4 ${
+            className={`w-1/2 py-4 text-lg  cursor-pointer ${
               tab === "login"
                 ? "bg-gray-100 text-gray-700"
                 : "text-gray-400"
@@ -32,7 +32,7 @@ export const AuthModal = ({ open, close, tab, setTab }) => {
 
           <button
             onClick={() => setTab("signup")}
-            className={`w-1/2 py-4 relative ${
+            className={`w-1/2 py-4 relative text-lg cursor-pointer ${
               tab === "signup"
                 ? "bg-white text-green-600"
                 : "bg-gray-100 text-gray-400"

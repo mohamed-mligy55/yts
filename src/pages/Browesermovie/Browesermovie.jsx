@@ -172,5 +172,3 @@ const showPagination =
       </>
 )
 }
-
-

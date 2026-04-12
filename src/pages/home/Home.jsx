@@ -4,6 +4,7 @@ import "./home.css"
 import { FaRegStar } from "react-icons/fa";
 
 import { useQuery } from '@tanstack/react-query';
+import { Helmet } from 'react-helmet-async';
 
 
 export const Home = () => {
@@ -22,13 +23,18 @@ const  API_KEY  = "76f92edf83690ef3b8d8d4f8bb41c35f"
     queryKey:["movies"],
     queryFn:fetchdata
    })
-   console.log(moviedata)
+
 
   
  
 
   return (
     <>
+    <Helmet>
+      <title>YTS Movies - Download HD Smallest Size Torrents</title>
+      <meta name="description" content="Browse and download YIFY movies in 720p, 1080p and 4K quality at the smallest file size." />
+      <meta name="keywords" content="movies, torrents, yify, hd movies, download movies" />
+    </Helmet>
     <div className="banner">
         <div className="overlay"></div>
 
@@ -63,11 +69,13 @@ const  API_KEY  = "76f92edf83690ef3b8d8d4f8bb41c35f"
 
    
       <div className='box ' key={movie.id}>
-      <Link to={`/moviedetails/${movie.id}`}>
+      <Link to={`/moviedetails/${movie.id}`} aria-label={`View details for ${movie.title}`}>
        <div className='image'>
           <img className='img'
   src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
   alt={movie.title}
+  loading="eager"
+  
 />
 </div>
       </Link>
@@ -109,9 +117,10 @@ const  API_KEY  = "76f92edf83690ef3b8d8d4f8bb41c35f"
         {moviedata.slice(4,12).map((movie)=>{
           return(
           <div className='box ' key={movie.id}>
-               <Link to={`/moviedetails/${movie.id}`}>
+               <Link to={`/moviedetails/${movie.id}`} aria-label={`View details for ${movie.title}`}>
         <div className='image'>
-        <img className='img' src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
+        <img className='img' src={`https://image.tmdb.org/t/p/w500${movie.poster_path}` }alt={movie.title}
+  loading="lazy"/>
         </div>
         </Link>
         <div>
@@ -142,9 +151,10 @@ const  API_KEY  = "76f92edf83690ef3b8d8d4f8bb41c35f"
             {moviedata.slice(13,20).map((movie)=>{
           return(
           <div className='box ' key={movie.id}>
-               <Link to={`/moviedetails/${movie.id}`}>
+               <Link to={`/moviedetails/${movie.id}`} aria-label={`View details for ${movie.title}`}>
         <div className='image'>
-        <img className='img' src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}/>
+        <img className='img' src={`https://image.tmdb.org/t/p/w500${movie.poster_path}` }  alt={movie.title}
+  loading="lazy"/>
         </div>
         </Link>
         <div>
@@ -170,3 +180,4 @@ const  API_KEY  = "76f92edf83690ef3b8d8d4f8bb41c35f"
     </>
   )
 }
+

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./moviedetails.css";
 import { CiHeart } from "react-icons/ci";
+import { Helmet } from 'react-helmet-async';
 
 
 export const Moviedetails = () => {
@@ -57,7 +58,7 @@ export const Moviedetails = () => {
           `https://api.themoviedb.org/3/movie/${params.id}/credits?api_key=${API_KEY}`
         );
         const castData = await resCast.json();
-        console.log(castData)
+       
         setcasts(castData.cast.slice(0, 5));
 
         const resReviews = await fetch(
@@ -79,7 +80,24 @@ setreview(reviewsData.results || []);
 
 
   return (
-    <>
+    <> 
+    <Helmet>
+        <title>{loading ? "Loading..." : `${moviedetails.title} (${moviedetails.release_date?.slice(0, 4)}) - YTS`}</title>
+        <meta name="description" content={moviedetails.overview?.slice(0, 160) || "Download YTS movies in high quality."} />
+        <meta name="keywords" content={`${moviedetails.title}, download torrent, yify movies, ${moviedetails.genres?.map(g => g.name).join(', ')}`} />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="video.movie" />
+        <meta property="og:title" content={moviedetails.title} />
+        <meta property="og:description" content={moviedetails.overview} />
+        <meta property="og:image" content={`https://image.tmdb.org/t/p/w500${moviedetails.poster_path}`} />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={moviedetails.title} />
+        <meta name="twitter:image" content={`https://image.tmdb.org/t/p/w500${moviedetails.poster_path}`} />
+      </Helmet>
+   
 
 <div className="banner py-20">
   <div className="overlay"></div>
@@ -104,6 +122,7 @@ setreview(reviewsData.results || []);
       className="img"
       src={`https://image.tmdb.org/t/p/w200${moviedetails.poster_path}`}
       alt={moviedetails.title}
+      loading="lazy"
     />
   ) : (
     <div className="no-image">

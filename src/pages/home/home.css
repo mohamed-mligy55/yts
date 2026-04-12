@@ -20,7 +20,23 @@
     }
   
 }
+@keyframes shimmer {
+  0% { background-position: -450px 0; }
+  100% { background-position: 450px 0; }
+}
 
+.skeleton-box {
+  background: #252525;
+  background-image: linear-gradient(to right, #252525 0%, #333 20%, #252525 40%, #252525 100%);
+  background-repeat: no-repeat;
+  background-size: 800px 100%;
+  animation: shimmer 1.5s linear infinite forwards;
+  border-radius: 8px;
+}
+
+.skeleton-img { width: 100%; aspect-ratio: 2/3; margin-bottom: 10px; }
+.skeleton-text { width: 80%; height: 18px; margin-bottom: 10px; }
+.skeleton-subtext { width: 40%; height: 14px; }
 .banner {
         background: url(https://img.yts.lt/assets/images/movies/good_boy_2025/background.jpg) no-repeat center center;
         background-size: cover;
