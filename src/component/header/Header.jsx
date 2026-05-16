@@ -34,7 +34,7 @@ export const Header = ({ openLogin, openSignup }) => {
         </form>
         <ul className='flex items-center '>
           <li><Link to='/' className='p-2 text-sm text-[#919191] font-bold transition duration-300 hover:text-white' >Home</Link></li>
-          <li><Link to='4k' className='p-2 text-sm text-[#6AC045] font-bold transition duration-300 hover:text-white'>4K</Link></li>
+          <li><Link className='p-2 text-sm text-[#6AC045] font-bold transition duration-300 hover:text-white'>4K</Link></li>
           <li><Link to='Trending' className='text-sm p-2 text-[#919191] font-bold transition duration-300 hover:text-white'>Trending</Link></li>
           <li><Link to='Browesermovie' className='text-sm p-2 text-[#919191] font-bold transition duration-300 hover:text-white'>Browesermovie</Link></li>
         </ul>

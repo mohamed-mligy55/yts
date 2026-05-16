@@ -259,6 +259,52 @@
 }
 
 /* Trailer */
+/* الخلفية المعتمة للشاشة كاملة */
+.video-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* لضمان ظهورها فوق كل العناصر */
+}
+
+/* الحاوية الخاصة بالفيديو */
+.video-modal-content {
+  position: relative;
+  background: #000;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+/* زر الإغلاق (X) */
+.close-btn {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+  color: #ff4d4d;
+}
+
+/* جعل الفيديو متجاوباً ومتوافقاً مع الشاشات الصغيرة والهواتف */
+@media (max-width: 768px) {
+  .video-modal-content iframe {
+    width: 90vw !important;
+    height: 50vw !important;
+  }
+}
 .trailer::after {
   content: "";
   position: absolute;

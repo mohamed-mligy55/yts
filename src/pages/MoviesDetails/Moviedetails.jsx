@@ -4,7 +4,7 @@ import "./moviedetails.css";
 import { CiHeart } from "react-icons/ci";
 import { Helmet } from 'react-helmet-async';
 
-
+import YouTube from "react-youtube";
 export const Moviedetails = () => {
   const [moviedetails, setMoviedetails] = useState({});
   const [similarmovie, setsimlarmovie] = useState([]);
@@ -78,8 +78,17 @@ setreview(reviewsData.results || []);
     fetchDetails();
   }, [params.id]);
 
+const [isOpen, setIsOpen] = useState(false);
 
-  return (
+const videoOptions = {
+    height: "390",
+    width: "640",
+    playerVars: {
+      autoplay: 1, // تشغيل الفيديو تلقائياً عند الفتح
+    },
+  };
+return(
+
     <> 
     <Helmet>
         <title>{loading ? "Loading..." : `${moviedetails.title} (${moviedetails.release_date?.slice(0, 4)}) - YTS`}</title>
@@ -232,7 +241,7 @@ setreview(reviewsData.results || []);
         </div>
 
         {/* ================= SIMILAR MOVIES ================= */}
-        <div className="similar-box">
+       <div className="similar-box">
           <h3>Similar Movies</h3>
 
           <div className="image-simlar">
@@ -270,54 +279,78 @@ setreview(reviewsData.results || []);
 </div>
 
 
+      
+  
+  
+
+
+
      <div className="main-content">
 
   {/* ================= IMAGE SECTION ================= */}
-  <div className="image-section">
-    <div className="container">
-      <div className="media-row">
+<div className="image-section">
+      <div className="container">
+        <div className="media-row">
 
-        {loading ? (
-          <>
-            <div className="shimmer" style={{ width: "60%", height: 350 }}></div>
-            <div className="shimmer" style={{ width: "20%", height: 350 }}></div>
-            <div className="shimmer" style={{ width: "20%", height: 350 }}></div>
-          </>
-        ) : Backdrops.length === 0 ? (
-          <p className="text-gray-400">No images available.</p>
-        ) : (
-          <>
-            {Trailer && (
-              <div className="media-item trailer">
-                <img
-                  src={
-                    Backdrops[0]
-                      ? `https://image.tmdb.org/t/p/w780${Backdrops[0].file_path}`
-                      : "/no-image.png"
-                  }
-                  alt="Trailer"
-                />
-                <div className="play-overlay">
-                  ▶
-                  <span>Trailer</span>
+          {loading ? (
+            <>
+              <div className="shimmer" style={{ width: "60%", height: 350 }}></div>
+              <div className="shimmer" style={{ width: "20%", height: 350 }}></div>
+              <div className="shimmer" style={{ width: "20%", height: 350 }}></div>
+            </>
+          ) : Backdrops.length === 0 ? (
+            <p className="text-gray-400">No images available.</p>
+          ) : (
+            <>
+              {Trailer && (
+                <div 
+                  className="media-item trailer" 
+                  onClick={() => setIsOpen(true)} // فتح الـ Modal عند الضغط
+                  style={{ cursor: "pointer" }}
+                >
+                  <img
+                    src={
+                      Backdrops[0]
+                        ? `https://image.tmdb.org/t/p/w780${Backdrops[0].file_path}`
+                        : "/no-image.png"
+                    }
+                    alt="Trailer"
+                  />
+                  <div className="play-overlay">
+                    ▶
+                    <span>Trailer</span>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {Backdrops.slice(1, 3).map((img, index) => (
-              <div className="media-item" key={index}>
-                <img
-                  src={`https://image.tmdb.org/t/p/w780${img.file_path}`}
-                  alt="Scene"
-                />
-              </div>
-            ))}
-          </>
-        )}
+              {Backdrops.slice(1, 3).map((img, index) => (
+                <div className="media-item" key={index}>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w780${img.file_path}`}
+                    alt="Scene"
+                  />
+                </div>
+              ))}
+            </>
+          )}
 
+        </div>
       </div>
+
+      {/* الشاشة المنبثقة للـ Trailer (تظهر فقط عندما تكون isOpen تساوي true) */}
+      {isOpen && (
+        <div className="video-modal-overlay" onClick={() => setIsOpen(false)}>
+          <div className="video-modal-content" onClick={(e) => e.stopPropagation()}>
+            {/* زر الإغلاق */}
+            <button className="close-btn" onClick={() => setIsOpen(false)}>✕</button>
+            
+            {/* مشغل اليوتيوب */}
+            {/* ملاحظة: يتم تمرير الـ id الخاص بالفيديو سواء كان الـ Trailer عبارة عن object أو string مباشر */}
+            <YouTube videoId={Trailer?.key || Trailer} opts={videoOptions} />
+          </div>
+        </div>
+      )}
     </div>
-  </div>
 
   {/* ================= CAST SECTION ================= */}
   <div className="casts-section">
