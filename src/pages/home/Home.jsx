@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { data, Link } from "react-router-dom";
 import "./home.css";
 import MovieCard from "./MovieCard";
 import { useQuery } from "@tanstack/react-query";
@@ -30,7 +30,6 @@ export const Home = () => {
     queryFn: fetchdata,
     staleTime: 1000 * 60 * 10,
   });
-
   if (error) {
     return (
       <h1 className="text-center text-red-500 pt-20">
@@ -42,13 +41,16 @@ export const Home = () => {
   return (
     <>
       <Helmet>
-        <title>
-          YTS Movies - Download HD Smallest Size Torrents
-        </title>
+        <title>Movies App</title>
 
         <meta
           name="description"
-          content="Browse and download YIFY movies in 720p, 1080p and 4K quality."
+          content="Best movies website"
+        />
+
+        <meta
+          name="keywords"
+          content="movies, cinema, react"
         />
       </Helmet>
 
@@ -76,7 +78,7 @@ export const Home = () => {
         </div>
  
         <div className="container">
-          <div className="banner-content pt-5 pb-5">
+          <div className="banner-content pt-5 pb-5 ">
             {moviedata.slice(0, 4).map((movie) => (
               <MovieCard
                 key={movie.id}
@@ -137,6 +139,7 @@ export const Home = () => {
           </div>
         </div>
       </div>
+   
 
       {isLoading && (
         <h1 className="text-center text-white py-10">

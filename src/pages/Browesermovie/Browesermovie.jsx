@@ -35,6 +35,7 @@ const fetchMovies = async ({ queryKey }) => {
 };
 
 export const Browesermovie = () => {
+
   const [filters, setFilters] = useState({
     query: "",
     page: 1,
